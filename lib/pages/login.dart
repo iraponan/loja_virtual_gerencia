@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
                     return SizedBox(
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: snapshot.hasData ? () {} : null,
+                        onPressed: snapshot.hasData ? _loginBloc.submit : null,
                         child: const Text('Entrar'),
                       ),
                     );
