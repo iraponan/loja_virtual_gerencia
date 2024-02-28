@@ -13,6 +13,12 @@ Future<void> main() async {
       title: 'Gerência da Loja Virtual',
       theme: ThemeData(
         primaryColor: Colors.pinkAccent,
+        scaffoldBackgroundColor: Colors.grey[850],
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.pinkAccent,
+          unselectedItemColor: Colors.white54,
+          selectedItemColor: Colors.white,
+        ),
         iconTheme: const IconThemeData(
           color: Colors.pinkAccent,
         ),
