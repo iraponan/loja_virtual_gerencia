@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_gerencia/widgets/tabs/users_tab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -44,18 +45,20 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (page) {
-          setState(() {
-            _page = page;
-          });
-        },
-        children: [
-          Container(color: Colors.red),
-          Container(color: Colors.yellow),
-          Container(color: Colors.green),
-        ],
+      body: SafeArea(
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (page) {
+            setState(() {
+              _page = page;
+            });
+          },
+          children: [
+            const UsersTab(),
+            Container(color: Colors.yellow),
+            Container(color: Colors.green),
+          ],
+        ),
       ),
     );
   }
