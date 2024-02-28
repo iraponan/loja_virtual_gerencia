@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:loja_virtual_gerencia/config/login_state.dart';
 import 'package:loja_virtual_gerencia/validators/login.dart';
@@ -24,10 +26,18 @@ class LoginBloc extends BlocBase with LoginValidator {
 
   Function(String) get changePassword => _passwordController.sink.add;
 
-  LoginBloc() {
-    FirebaseAuth.instance.authStateChanges().listen((user) {
-      if (user != null) {
+  late StreamSubscription _streamSubscription;
 
+  LoginBloc() {
+    FirebaseAuth.instance.signOut();
+    _streamSubscription = FirebaseAuth.instance.authStateChanges().listen((user) async {
+      if (user != null) {
+        if (await verifyPrivileges(user)){
+          _stateController.add(LoginState.SUCCESS);
+        } else {
+          FirebaseAuth.instance.signOut();
+          _stateController.add(LoginState.FAIL);
+        }
       } else {
         _stateController.add(LoginState.IDLE);
       }
@@ -43,8 +53,17 @@ class LoginBloc extends BlocBase with LoginValidator {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError((e) {
-          _stateController.add(LoginState.FAIL);
+      _stateController.add(LoginState.FAIL);
     });
+  }
+
+  Future<bool> verifyPrivileges(User user) async {
+    return await FirebaseFirestore.instance
+        .collection('admin')
+        .doc(user.uid)
+        .get()
+        .then((doc) => doc.exists)
+        .catchError((e) => false);
   }
 
   @override
@@ -52,6 +71,7 @@ class LoginBloc extends BlocBase with LoginValidator {
     _emailController.close();
     _passwordController.close();
     _stateController.close();
+    _streamSubscription.cancel();
     super.dispose();
   }
 }

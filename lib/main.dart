@@ -23,6 +23,9 @@ Future<void> main() async {
             disabledBackgroundColor: Colors.pinkAccent.withAlpha(140),
           ),
         ),
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
+          color: Colors.pinkAccent,
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: const LoginPage(),
