@@ -17,7 +17,7 @@ mixin LoginValidator {
       if (password.length > 4) {
         sink.add(password);
       } else {
-        sink.addError('Senha Invalida! A senha deve conter pelo menos 4 caracteres.');
+        sink.addError('Senha Invalida!\nA senha deve conter pelo menos 4 caracteres.');
       }
     }
   );

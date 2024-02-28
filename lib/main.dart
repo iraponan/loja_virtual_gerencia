@@ -20,6 +20,7 @@ Future<void> main() async {
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.pinkAccent,
             foregroundColor: Colors.white,
+            disabledBackgroundColor: Colors.pinkAccent.withAlpha(140),
           ),
         ),
       ),
