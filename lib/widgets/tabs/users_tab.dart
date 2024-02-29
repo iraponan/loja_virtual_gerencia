@@ -8,17 +8,17 @@ class UsersTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _userBloc = BlocProvider.getBloc<UserBloc>();
+    final userBloc = BlocProvider.getBloc<UserBloc>();
 
     return Column(
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: TextField(
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
             ),
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: 'Pesquisar...',
               hintStyle: TextStyle(
                 color: Colors.white,
@@ -29,11 +29,12 @@ class UsersTab extends StatelessWidget {
               ),
               border: InputBorder.none,
             ),
+            onChanged: userBloc.onChangedSearch,
           ),
         ),
         Expanded(
           child: StreamBuilder<List>(
-              stream: _userBloc.outUsers,
+              stream: userBloc.outUsers,
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());

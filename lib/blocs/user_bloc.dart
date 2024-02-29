@@ -7,7 +7,7 @@ class UserBloc extends BlocBase {
   final _userController = BehaviorSubject<List>();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Map<String, Map<String, dynamic>?> _users = {};
+  final Map<String, Map<String, dynamic>?> _users = {};
 
   Stream<List> get outUsers => _userController.stream;
 
@@ -60,6 +60,22 @@ class UserBloc extends BlocBase {
 
   void _unsubscribeToOrders(String uid) {
     _users[uid]?['subscription'].cancel();
+  }
+
+  void onChangedSearch(String search) {
+    if (search.trim().isEmpty) {
+      _userController.add(_users.values.toList());
+    } else {
+      _userController.add(_filter(search.trim()));
+    }
+  }
+
+  List<Map<String, dynamic>> _filter(String search) {
+    List<Map<String, dynamic>> filterUsers = List.from(_users.values.toList());
+    filterUsers.retainWhere((user) {
+      return user['name'].toUpperCase().contains(search.toUpperCase());
+    });
+    return filterUsers;
   }
 
   @override
