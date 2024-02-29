@@ -1,6 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
-import 'package:loja_virtual_gerencia/blocs/user_bloc.dart';
+import 'package:loja_virtual_gerencia/blocs/user.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/orders.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/users.dart';
 

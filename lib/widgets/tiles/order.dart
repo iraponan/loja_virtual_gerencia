@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_gerencia/widgets/order_header.dart';
 
 class OrderTile extends StatelessWidget {
   const OrderTile({super.key});
@@ -26,6 +27,7 @@ class OrderTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const OrderHeader(),
                   const Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
