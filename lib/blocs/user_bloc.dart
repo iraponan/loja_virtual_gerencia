@@ -1,12 +1,15 @@
+import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UserBloc extends BlocBase {
-  final _userController = BehaviorSubject();
+  final _userController = BehaviorSubject<List>();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Map<String, Map<String, dynamic>?> _users = {};
+
+  Stream<List> get outUsers => _userController.stream;
 
   UserBloc() {
     _addUsersListener();
