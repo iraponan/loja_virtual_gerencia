@@ -1,7 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_gerencia/blocs/user_bloc.dart';
-import 'package:loja_virtual_gerencia/widgets/tiles/user_tile.dart';
+import 'package:loja_virtual_gerencia/widgets/tiles/user.dart';
 
 class UsersTab extends StatelessWidget {
   const UsersTab({super.key});
