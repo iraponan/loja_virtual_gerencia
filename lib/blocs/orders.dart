@@ -2,7 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
 
-class Orders extends BlocBase {
+class OrdersBloc extends BlocBase {
   final _ordersController = BehaviorSubject<List>();
   final List<DocumentSnapshot> _orders = [];
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -10,7 +10,7 @@ class Orders extends BlocBase {
   Stream<List> get outOrders => _ordersController.stream;
 
 
-  Orders(){
+  OrdersBloc(){
     _addOrdersListener();
   }
 

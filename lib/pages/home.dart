@@ -1,5 +1,6 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_gerencia/blocs/orders.dart';
 import 'package:loja_virtual_gerencia/blocs/user.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/orders.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/users.dart';
@@ -14,6 +15,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
   late UserBloc _userBloc;
+  late OrdersBloc _ordersBloc;
 
   int _page = 0;
 
@@ -22,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     _pageController = PageController();
     _userBloc = UserBloc();
+    _ordersBloc = OrdersBloc();
   }
 
   @override
@@ -53,8 +56,11 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SafeArea(
         child: BlocProvider(
-          blocs: [Bloc((i) => _userBloc)],
-          dependencies: [],
+          blocs: [
+            Bloc((i) => _userBloc),
+            Bloc((i) => _ordersBloc),
+          ],
+          dependencies: const [],
           child: PageView(
             controller: _pageController,
             onPageChanged: (page) {

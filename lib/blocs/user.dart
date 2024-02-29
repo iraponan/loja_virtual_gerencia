@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -49,7 +48,7 @@ class UserBloc extends BlocBase {
       double money = 0.0;
       for (DocumentSnapshot d in orders.docs) {
         DocumentSnapshot order =
-            await _firestore.collection('orders').doc().get();
+            await _firestore.collection('orders').doc(d.id).get();
         if (order.data() == null) continue;
         money += order.get('totalPrice');
       }
@@ -71,11 +70,11 @@ class UserBloc extends BlocBase {
   }
 
   List<Map<String, dynamic>> _filter(String search) {
-    List<Map<String, dynamic>> filterUsers = List.from(_users.values.toList());
-    filterUsers.retainWhere((user) {
+    List<Map<String, dynamic>> filteredUsers = List.from(_users.values.toList());
+    filteredUsers.retainWhere((user) {
       return user['name'].toUpperCase().contains(search.toUpperCase());
     });
-    return filterUsers;
+    return filteredUsers;
   }
 
   @override

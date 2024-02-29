@@ -1,19 +1,29 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_gerencia/widgets/order_header.dart';
 
 class OrderTile extends StatelessWidget {
-  const OrderTile({super.key});
+  const OrderTile({super.key, required this.order});
+
+  final DocumentSnapshot order;
 
   @override
   Widget build(BuildContext context) {
+    final states = [
+      '',
+      'Em Preparação',
+      'Em Transporte',
+      'Aguardando Entrega',
+      'Entregue'
+    ];
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Card(
         child: ExpansionTile(
-          title: const Text(
-            '#465464 - Entregue',
+          title: Text(
+            '#${order.id.substring(order.id.length - 7, order.id.length)} - ${states[order.get('status')]}',
             style: TextStyle(
-              color: Colors.green,
+              color: order.get('status') != 4 ? Colors.grey[850] : Colors.green,
             ),
           ),
           children: [
@@ -28,19 +38,19 @@ class OrderTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const OrderHeader(),
-                  const Column(
+                  Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListTile(
-                        title: Text('Teste de produto.'),
-                        subtitle: Text('grupo/codigo'),
+                    children: order.get('products').map<Widget>((p) {
+                      return ListTile(
+                        title: Text('${p['product']['title']} | ${p['size']}'),
+                        subtitle: Text('${p['category']} | ${p['pid']}'),
                         trailing: Text(
-                          '2',
-                          style: TextStyle(fontSize: 20),
+                          p['quantity'].toString(),
+                          style: const TextStyle(fontSize: 20),
                         ),
                         contentPadding: EdgeInsets.zero,
-                      ),
-                    ],
+                      );
+                    }).toList(),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
