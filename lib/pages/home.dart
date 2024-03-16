@@ -4,6 +4,7 @@ import 'package:loja_virtual_gerencia/blocs/orders.dart';
 import 'package:loja_virtual_gerencia/blocs/user.dart';
 import 'package:loja_virtual_gerencia/widgets/build_floating.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/orders.dart';
+import 'package:loja_virtual_gerencia/widgets/tabs/products.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/users.dart';
 
 class HomePage extends StatefulWidget {
@@ -69,10 +70,10 @@ class _HomePageState extends State<HomePage> {
                 _page = page;
               });
             },
-            children: [
-              const UsersTab(),
-              const OrdersTab(),
-              Container(color: Colors.green),
+            children: const [
+              UsersTab(),
+              OrdersTab(),
+              ProductsTab(),
             ],
           ),
         ),
