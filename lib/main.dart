@@ -14,6 +14,10 @@ Future<void> main() async {
       theme: ThemeData(
         primaryColor: Colors.pinkAccent,
         scaffoldBackgroundColor: Colors.grey[850],
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.pinkAccent,
+          foregroundColor: Colors.white,
+        ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Colors.pinkAccent,
           unselectedItemColor: Colors.white54,

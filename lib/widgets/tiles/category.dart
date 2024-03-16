@@ -61,7 +61,7 @@ class CategoryTile extends StatelessWidget {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ProductPage(
                                     categoryId: category.id,
-                                    product: category,
+                                    product: null,
                                   )));
                         },
                       )),
