@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loja_virtual_gerencia/blocs/product.dart';
+import 'package:loja_virtual_gerencia/widgets/images_product.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage(
@@ -64,6 +65,18 @@ class _ProductPageState extends State<ProductPage> {
                 return ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
+                    const Text(
+                      'Imagens',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 12,
+                      ),
+                    ),
+                    ImagesProduct(
+                      onSaved: (List<dynamic>? newValue) {},
+                      validator: (List<dynamic>? value) {},
+                      initialValue: [],
+                    ),
                     TextFormField(
                       initialValue: snapshot.data?['title'],
                       style: fieldStyle,
@@ -80,7 +93,8 @@ class _ProductPageState extends State<ProductPage> {
                       validator: (t) {},
                     ),
                     TextFormField(
-                      initialValue: UtilBrasilFields.obterReal(snapshot.data?['price'] ?? 0.0),
+                      initialValue: UtilBrasilFields.obterReal(
+                          snapshot.data?['price'] ?? 0.0),
                       style: fieldStyle,
                       decoration: _buildDecoration('Preço'),
                       inputFormatters: [
