@@ -1,6 +1,6 @@
 enum LoginState {
-  IDLE,
-  LOADING,
-  SUCCESS,
-  FAIL
+  idle,
+  loading,
+  success,
+  fail
 }

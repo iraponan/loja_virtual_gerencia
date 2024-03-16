@@ -2,6 +2,7 @@ import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_gerencia/blocs/orders.dart';
 import 'package:loja_virtual_gerencia/blocs/user.dart';
+import 'package:loja_virtual_gerencia/widgets/build_floating.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/orders.dart';
 import 'package:loja_virtual_gerencia/widgets/tabs/users.dart';
 
@@ -76,6 +77,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      floatingActionButton: BuildFloating(page: _page, orderBloc: _ordersBloc,),
     );
   }
 

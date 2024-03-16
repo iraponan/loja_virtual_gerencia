@@ -1,0 +1,4 @@
+enum SortCriteria {
+  readFirst,
+  readLast
+}

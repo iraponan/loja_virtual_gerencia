@@ -21,14 +21,14 @@ class _LoginPageState extends State<LoginPage> {
     _loginBloc.outState.listen(
       (state) {
         switch (state) {
-          case LoginState.SUCCESS:
+          case LoginState.success:
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 builder: (context) => const HomePage(),
               ),
             );
             break;
-          case LoginState.FAIL:
+          case LoginState.fail:
             showDialog(
               context: context,
               builder: (context) => const AlertDialog(
@@ -37,8 +37,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
             );
             break;
-          case LoginState.LOADING:
-          case LoginState.IDLE:
+          case LoginState.loading:
+          case LoginState.idle:
         }
       },
     );
@@ -49,18 +49,18 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.grey[850],
       body: StreamBuilder<LoginState>(
-          initialData: LoginState.LOADING,
+          initialData: LoginState.loading,
           stream: _loginBloc.outState,
           builder: (context, snapshot) {
             print(snapshot.data);
             switch (snapshot.data) {
-              case LoginState.LOADING:
+              case LoginState.loading:
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              case LoginState.FAIL:
-              case LoginState.SUCCESS:
-              case LoginState.IDLE:
+              case LoginState.fail:
+              case LoginState.success:
+              case LoginState.idle:
                 return Center(
                   child: SingleChildScrollView(
                     child: Container(
