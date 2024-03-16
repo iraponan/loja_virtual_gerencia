@@ -30,18 +30,19 @@ class LoginBloc extends BlocBase with LoginValidator {
 
   LoginBloc() {
     //FirebaseAuth.instance.signOut();
-    _streamSubscription = FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user != null) {
-        if (await verifyPrivileges(user)){
-          _stateController.add(LoginState.success);
-        } else {
-          FirebaseAuth.instance.signOut();
-          _stateController.add(LoginState.fail);
-        }
-      } else {
-        _stateController.add(LoginState.idle);
-      }
-    });
+    _streamSubscription =
+        FirebaseAuth.instance.authStateChanges().listen((user) async {
+          if (user != null) {
+            if (await verifyPrivileges(user)) {
+              _stateController.add(LoginState.success);
+            } else {
+              FirebaseAuth.instance.signOut();
+              _stateController.add(LoginState.fail);
+            }
+          } else {
+            _stateController.add(LoginState.idle);
+          }
+        });
   }
 
   void submit() {
@@ -54,6 +55,7 @@ class LoginBloc extends BlocBase with LoginValidator {
         .signInWithEmailAndPassword(email: email, password: password)
         .catchError((e) {
       _stateController.add(LoginState.fail);
+      return e;
     });
   }
 

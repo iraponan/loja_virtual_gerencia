@@ -52,7 +52,6 @@ class _LoginPageState extends State<LoginPage> {
           initialData: LoginState.loading,
           stream: _loginBloc.outState,
           builder: (context, snapshot) {
-            print(snapshot.data);
             switch (snapshot.data) {
               case LoginState.loading:
                 return const Center(

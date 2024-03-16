@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:loja_virtual_gerencia/pages/product.dart';
 
 class CategoryTile extends StatelessWidget {
   const CategoryTile({super.key, required this.category});
@@ -38,19 +39,32 @@ class CategoryTile extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                         ),
                         title: Text(doc.get('title')),
-                        trailing: Text('R\$ ${doc.get('price').toStringAsFixed(2)}'),
-                        onTap: () {},
+                        trailing:
+                            Text('R\$ ${doc.get('price').toStringAsFixed(2)}'),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProductPage(
+                              categoryId: category.id,
+                              product: doc,
+                            ),
+                          ));
+                        },
                       );
-                    }).toList()..add(
-                      ListTile(
+                    }).toList()
+                      ..add(ListTile(
                         leading: const CircleAvatar(
                           backgroundColor: Colors.transparent,
                           child: Icon(Icons.add),
                         ),
                         title: const Text('Adicionar'),
-                        onTap: () {},
-                      )
-                    ),
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProductPage(
+                                    categoryId: category.id,
+                                    product: category,
+                                  )));
+                        },
+                      )),
                   );
                 }
               },
