@@ -23,6 +23,39 @@ class CategoryTile extends StatelessWidget {
               fontWeight: FontWeight.w500,
             ),
           ),
+          children: [
+            FutureBuilder<QuerySnapshot>(
+              future: category.reference.collection('itens').get(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const SizedBox.shrink();
+                } else {
+                  return Column(
+                    children: snapshot.data!.docs.map((doc) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(doc.get('images')[0]),
+                          backgroundColor: Colors.transparent,
+                        ),
+                        title: Text(doc.get('title')),
+                        trailing: Text('R\$ ${doc.get('price').toStringAsFixed(2)}'),
+                        onTap: () {},
+                      );
+                    }).toList()..add(
+                      ListTile(
+                        leading: const CircleAvatar(
+                          backgroundColor: Colors.transparent,
+                          child: Icon(Icons.add),
+                        ),
+                        title: const Text('Adicionar'),
+                        onTap: () {},
+                      )
+                    ),
+                  );
+                }
+              },
+            ),
+          ],
         ),
       ),
     );
