@@ -5,7 +5,6 @@ import 'package:rxdart/rxdart.dart';
 class UserBloc extends BlocBase {
   final _userController = BehaviorSubject<List>();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   final Map<String, Map<String, dynamic>?> _users = {};
 
   Stream<List> get outUsers => _userController.stream;
@@ -75,6 +74,10 @@ class UserBloc extends BlocBase {
       return user['name'].toUpperCase().contains(search.toUpperCase());
     });
     return filteredUsers;
+  }
+
+  Map<String, dynamic>? getUser(String uid) {
+    return _users[uid];
   }
 
   @override
