@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:loja_virtual_gerencia/widgets/add_size_dialog.dart';
-import 'package:loja_virtual_gerencia/widgets/object_remove_sheet.dart';
+import 'package:loja_virtual_gerencia/widgets/sizes/add_size_dialog.dart';
+import 'package:loja_virtual_gerencia/widgets/others/object_remove_sheet.dart';
 
 class ProductSizes extends FormField<List> {
   ProductSizes({

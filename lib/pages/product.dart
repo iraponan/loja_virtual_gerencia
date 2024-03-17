@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:loja_virtual_gerencia/blocs/product.dart';
 import 'package:loja_virtual_gerencia/validators/product.dart';
 import 'package:loja_virtual_gerencia/widgets/image/images_product.dart';
-import 'package:loja_virtual_gerencia/widgets/product_sizes.dart';
+import 'package:loja_virtual_gerencia/widgets/sizes/product_sizes.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage(

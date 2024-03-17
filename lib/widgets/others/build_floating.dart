@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:loja_virtual_gerencia/blocs/orders.dart';
 import 'package:loja_virtual_gerencia/config/sort_criteria.dart';
+import 'package:loja_virtual_gerencia/widgets/others/edit_category_dialog.dart';
 
 class BuildFloating extends StatelessWidget {
   const BuildFloating({super.key, required this.page, required this.orderBloc});
@@ -51,6 +52,19 @@ class BuildFloating extends StatelessWidget {
           overlayOpacity: 0.4,
           overlayColor: Colors.black,
           child: const Icon(Icons.sort),
+        );
+      case 2:
+        return FloatingActionButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => const EditCategoryDialog(),
+            );
+          },
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         );
       default:
         return const SizedBox.shrink();

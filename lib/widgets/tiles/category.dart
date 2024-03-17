@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_gerencia/pages/product.dart';
-import 'package:loja_virtual_gerencia/widgets/edit_category_dialog.dart';
+import 'package:loja_virtual_gerencia/widgets/others/edit_category_dialog.dart';
 
 class CategoryTile extends StatelessWidget {
   const CategoryTile({super.key, required this.category});
 
-  final DocumentSnapshot category;
+  final DocumentSnapshot? category;
 
   @override
   Widget build(BuildContext context) {
@@ -18,16 +18,16 @@ class CategoryTile extends StatelessWidget {
             onTap: () {
               showDialog(
                 context: context,
-                builder: (context) => const EditCategoryDialog(),
+                builder: (context) => EditCategoryDialog(category: category,),
               );
             },
             child: CircleAvatar(
-              backgroundImage: NetworkImage(category.get('icon')),
+              backgroundImage: NetworkImage(category?.get('icon')),
               backgroundColor: Colors.transparent,
             ),
           ),
           title: Text(
-            category.get('title'),
+            category?.get('title'),
             style: TextStyle(
               color: Colors.grey[850],
               fontWeight: FontWeight.w500,
@@ -35,7 +35,7 @@ class CategoryTile extends StatelessWidget {
           ),
           children: [
             StreamBuilder<QuerySnapshot>(
-              stream: category.reference.collection('itens').snapshots(),
+              stream: category?.reference.collection('itens').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SizedBox.shrink();
@@ -53,7 +53,7 @@ class CategoryTile extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => ProductPage(
-                              categoryId: category.id,
+                              categoryId: category!.id,
                               product: doc,
                             ),
                           ));
@@ -69,7 +69,7 @@ class CategoryTile extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => ProductPage(
-                                    categoryId: category.id,
+                                    categoryId: category!.id,
                                     product: null,
                                   )));
                         },

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loja_virtual_gerencia/blocs/login.dart';
 import 'package:loja_virtual_gerencia/config/login_state.dart';
 import 'package:loja_virtual_gerencia/pages/home.dart';
-import 'package:loja_virtual_gerencia/widgets/input_field.dart';
+import 'package:loja_virtual_gerencia/widgets/others/input_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

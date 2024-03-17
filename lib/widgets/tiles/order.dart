@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:loja_virtual_gerencia/widgets/order_header.dart';
+import 'package:loja_virtual_gerencia/widgets/others/order_header.dart';
 
 class OrderTile extends StatelessWidget {
   const OrderTile({super.key, required this.order});
