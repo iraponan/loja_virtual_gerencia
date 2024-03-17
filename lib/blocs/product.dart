@@ -29,6 +29,22 @@ class ProductBloc extends BlocBase {
 
   Stream<Map> get outData => _dataController.stream;
 
+  void saveTitle (String? text) {
+    unsavedData['title'] = text;
+  }
+
+  void saveDescription (String? text) {
+    unsavedData['description'] = text;
+  }
+
+  void savePrice (String? text) {
+    unsavedData['price'] = double.parse(text!);
+  }
+
+  void saveImages (List? images) {
+    unsavedData['images'] = images;
+  }
+
   @override
   void dispose() {
     super.dispose();
