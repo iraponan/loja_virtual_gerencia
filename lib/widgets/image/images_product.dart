@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loja_virtual_gerencia/widgets/image/image_remove_sheet.dart';
+import 'package:loja_virtual_gerencia/widgets/object_remove_sheet.dart';
 import 'package:loja_virtual_gerencia/widgets/image/image_source_sheet.dart';
 
 class ImagesProduct extends FormField<List> {
@@ -49,7 +49,7 @@ class ImagesProduct extends FormField<List> {
                             onLongPress: () {
                               showModalBottomSheet(
                                 context: context,
-                                builder: (context) => ImageRemoveSheet(
+                                builder: (context) => ObjectRemoveSheet(
                                   onImageSelected: (option) {
                                     if (option) {
                                       state.didChange(state.value?..remove(i));

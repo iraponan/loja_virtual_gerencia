@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ImageRemoveSheet extends StatelessWidget {
-  const ImageRemoveSheet({super.key, required this.onImageSelected});
+class ObjectRemoveSheet extends StatelessWidget {
+  const ObjectRemoveSheet({super.key, required this.onImageSelected});
 
   final Function(bool) onImageSelected;
 

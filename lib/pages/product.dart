@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:loja_virtual_gerencia/blocs/product.dart';
 import 'package:loja_virtual_gerencia/validators/product.dart';
 import 'package:loja_virtual_gerencia/widgets/image/images_product.dart';
+import 'package:loja_virtual_gerencia/widgets/product_sizes.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage(
@@ -58,14 +59,15 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
                     initialData: false,
                     builder: (context, snapshot) {
                       return IconButton(
-                        onPressed: snapshot.data! ? null : () {
-                          _productBloc.deleteProduct();
-                          Navigator.of(context).pop();
-                        },
+                        onPressed: snapshot.data!
+                            ? null
+                            : () {
+                                _productBloc.deleteProduct();
+                                Navigator.of(context).pop();
+                              },
                         icon: const Icon(Icons.remove),
                       );
-                    }
-                );
+                    });
               } else {
                 return const SizedBox.shrink();
               }
@@ -140,6 +142,22 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
                               decimal: true),
                           onSaved: _productBloc.savePrice,
                           validator: validatePrice,
+                        ),
+                        const SizedBox(
+                          height: 16,
+                        ),
+                        const Text(
+                          'Tamanhos',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                        ProductSizes(
+                          context: context,
+                          initialValue: snapshot.data?['sizes'],
+                          onSaved: (s) {},
+                          validator: (s) {},
                         ),
                       ],
                     );
