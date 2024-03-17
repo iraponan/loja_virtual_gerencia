@@ -41,22 +41,45 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: const Text('Criar Produto'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.remove),
-          ),
-          StreamBuilder<bool>(
-            stream: _productBloc.outLoading,
+        title: StreamBuilder<bool>(
+            stream: _productBloc.outCreated,
             initialData: false,
             builder: (context, snapshot) {
-              return IconButton(
-                onPressed: snapshot.data! ? null : saveProduct,
-                icon: const Icon(Icons.save),
-              );
-            }
+              return Text(snapshot.data! ? 'Editar Produto' : 'Criar Produto');
+            }),
+        actions: [
+          StreamBuilder<bool>(
+            stream: _productBloc.outCreated,
+            initialData: false,
+            builder: (context, snapshot) {
+              if (snapshot.data ?? false) {
+                return StreamBuilder<bool>(
+                    stream: _productBloc.outLoading,
+                    initialData: false,
+                    builder: (context, snapshot) {
+                      return IconButton(
+                        onPressed: snapshot.data! ? null : () {
+                          _productBloc.deleteProduct();
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(Icons.remove),
+                      );
+                    }
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
           ),
+          StreamBuilder<bool>(
+              stream: _productBloc.outLoading,
+              initialData: false,
+              builder: (context, snapshot) {
+                return IconButton(
+                  onPressed: snapshot.data! ? null : saveProduct,
+                  icon: const Icon(Icons.save),
+                );
+              }),
         ],
       ),
       body: Stack(
@@ -113,8 +136,8 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
                             FilteringTextInputFormatter.digitsOnly,
                             CentavosInputFormatter(moeda: true),
                           ],
-                          keyboardType:
-                              const TextInputType.numberWithOptions(decimal: true),
+                          keyboardType: const TextInputType.numberWithOptions(
+                              decimal: true),
                           onSaved: _productBloc.savePrice,
                           validator: validatePrice,
                         ),
@@ -134,8 +157,7 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
                     color: snapshot.data! ? Colors.black54 : Colors.transparent,
                   ),
                 );
-              }
-          ),
+              }),
         ],
       ),
     );
@@ -160,6 +182,7 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
             'Salvando o produto...',
             style: TextStyle(color: Colors.white),
           ),
+          duration: Duration(minutes: 1),
         ),
       );
       bool success = await _productBloc.saveProduct();
@@ -170,9 +193,7 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              success
-                  ? 'Produto Salvo!'
-                  : 'Erro ao salvar produto',
+              success ? 'Produto Salvo!' : 'Erro ao salvar produto',
               style: const TextStyle(color: Colors.white),
             ),
             duration: const Duration(seconds: 5),

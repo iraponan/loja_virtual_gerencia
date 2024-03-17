@@ -25,8 +25,8 @@ class CategoryTile extends StatelessWidget {
             ),
           ),
           children: [
-            FutureBuilder<QuerySnapshot>(
-              future: category.reference.collection('itens').get(),
+            StreamBuilder<QuerySnapshot>(
+              stream: category.reference.collection('itens').snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const SizedBox.shrink();
