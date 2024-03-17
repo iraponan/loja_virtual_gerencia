@@ -26,4 +26,9 @@ mixin ProductValidator {
       return null;
     }
   }
+
+  String? validateSize(List? sizes) {
+    if (sizes == null || sizes.isEmpty) return 'Adicione pelo menos um tamanho.';
+    return null;
+  }
 }
