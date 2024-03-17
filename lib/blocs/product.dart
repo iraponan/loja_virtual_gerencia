@@ -26,23 +26,35 @@ class ProductBloc extends BlocBase {
   late Map<String, dynamic> unsavedData;
 
   final _dataController = BehaviorSubject<Map>();
+  final _loadingController = BehaviorSubject<bool>();
 
   Stream<Map> get outData => _dataController.stream;
+  Stream<bool> get outLoading => _loadingController.stream;
 
-  void saveTitle (String? text) {
+  void saveTitle(String? text) {
     unsavedData['title'] = text;
   }
 
-  void saveDescription (String? text) {
+  void saveDescription(String? text) {
     unsavedData['description'] = text;
   }
 
-  void savePrice (String? text) {
-    unsavedData['price'] = double.parse(text!);
+  void savePrice(String? text) {
+    unsavedData['price'] = double.tryParse(
+        text!.replaceAll('R\$ ', '')
+             .replaceAll('.', '')
+             .replaceAll(',', '.'));
   }
 
-  void saveImages (List? images) {
+  void saveImages(List? images) {
     unsavedData['images'] = images;
+  }
+
+  Future<bool> saveProduct() async {
+    _loadingController.add(true);
+    await Future.delayed(const Duration(seconds: 3));
+    _loadingController.add(false);
+    return true;
   }
 
   @override

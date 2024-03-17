@@ -47,77 +47,96 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
             onPressed: () {},
             icon: const Icon(Icons.remove),
           ),
-          IconButton(
-            onPressed: () {
-              if (_formKey.currentState?.validate() ?? false) {
-                _formKey.currentState?.save();
-              }
-            },
-            icon: const Icon(Icons.save),
+          StreamBuilder<bool>(
+            stream: _productBloc.outLoading,
+            initialData: false,
+            builder: (context, snapshot) {
+              return IconButton(
+                onPressed: snapshot.data! ? null : saveProduct,
+                icon: const Icon(Icons.save),
+              );
+            }
           ),
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: StreamBuilder<Map>(
-            stream: _productBloc.outData,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    const Text(
-                      'Imagens',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12,
-                      ),
-                    ),
-                    ImagesProduct(
-                      context: context,
-                      onSaved: _productBloc.saveImages,
-                      validator: validateImages,
-                      initialValue: snapshot.data?['images'],
-                    ),
-                    TextFormField(
-                      initialValue: snapshot.data?['title'],
-                      style: fieldStyle,
-                      decoration: _buildDecoration('Título'),
-                      textCapitalization: TextCapitalization.sentences,
-                      onSaved: _productBloc.saveTitle,
-                      validator: validateTitle,
-                    ),
-                    TextFormField(
-                      initialValue: snapshot.data?['description'],
-                      style: fieldStyle,
-                      decoration: _buildDecoration('Descrição'),
-                      textCapitalization: TextCapitalization.sentences,
-                      maxLines: 6,
-                      onSaved: _productBloc.saveDescription,
-                      validator: validateDescription,
-                    ),
-                    TextFormField(
-                      initialValue: UtilBrasilFields.obterReal(
-                          snapshot.data?['price'] ?? 0.0),
-                      style: fieldStyle,
-                      decoration: _buildDecoration('Preço'),
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        CentavosInputFormatter(moeda: true),
+      body: Stack(
+        children: [
+          Form(
+            key: _formKey,
+            child: StreamBuilder<Map>(
+                stream: _productBloc.outData,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    return ListView(
+                      padding: const EdgeInsets.all(16),
+                      children: [
+                        const Text(
+                          'Imagens',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                        ImagesProduct(
+                          context: context,
+                          onSaved: _productBloc.saveImages,
+                          validator: validateImages,
+                          initialValue: snapshot.data?['images'],
+                        ),
+                        TextFormField(
+                          initialValue: snapshot.data?['title'],
+                          style: fieldStyle,
+                          decoration: _buildDecoration('Título'),
+                          textCapitalization: TextCapitalization.sentences,
+                          onSaved: _productBloc.saveTitle,
+                          validator: validateTitle,
+                        ),
+                        TextFormField(
+                          initialValue: snapshot.data?['description'],
+                          style: fieldStyle,
+                          decoration: _buildDecoration('Descrição'),
+                          textCapitalization: TextCapitalization.sentences,
+                          maxLines: 6,
+                          onSaved: _productBloc.saveDescription,
+                          validator: validateDescription,
+                        ),
+                        TextFormField(
+                          initialValue: UtilBrasilFields.obterReal(
+                              snapshot.data?['price'] ?? 0.0),
+                          style: fieldStyle,
+                          decoration: _buildDecoration('Preço'),
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CentavosInputFormatter(moeda: true),
+                          ],
+                          keyboardType:
+                              const TextInputType.numberWithOptions(decimal: true),
+                          onSaved: _productBloc.savePrice,
+                          validator: validatePrice,
+                        ),
                       ],
-                      keyboardType:
-                          const TextInputType.numberWithOptions(decimal: true),
-                      onSaved: _productBloc.savePrice,
-                      validator: validatePrice,
-                    ),
-                  ],
+                    );
+                  }
+                }),
+          ),
+          StreamBuilder<bool>(
+              stream: _productBloc.outLoading,
+              initialData: false,
+              builder: (context, snapshot) {
+                FocusManager.instance.primaryFocus?.unfocus();
+                return IgnorePointer(
+                  ignoring: !snapshot.data!,
+                  child: Container(
+                    color: snapshot.data! ? Colors.black54 : Colors.transparent,
+                  ),
                 );
               }
-            }),
+          ),
+        ],
       ),
     );
   }
@@ -129,5 +148,37 @@ class _ProductPageState extends State<ProductPage> with ProductValidator {
         color: Colors.grey,
       ),
     );
+  }
+
+  Future<void> saveProduct() async {
+    ScaffoldMessenger.of(context).removeCurrentSnackBar();
+    if (_formKey.currentState?.validate() ?? false) {
+      _formKey.currentState?.save();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Salvando o produto...',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      );
+      bool success = await _productBloc.saveProduct();
+      if (!context.mounted) {
+        return;
+      } else {
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              success
+                  ? 'Produto Salvo!'
+                  : 'Erro ao salvar produto',
+              style: const TextStyle(color: Colors.white),
+            ),
+            duration: const Duration(seconds: 5),
+          ),
+        );
+      }
+    }
   }
 }

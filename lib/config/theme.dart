@@ -4,6 +4,9 @@ mixin ThemeProject {
   static final theme = ThemeData(
     primaryColor: Colors.pinkAccent,
     scaffoldBackgroundColor: Colors.grey[850],
+    snackBarTheme: const SnackBarThemeData(
+      backgroundColor: Colors.pinkAccent,
+    ),
     appBarTheme: const AppBarTheme(
       backgroundColor: Colors.pinkAccent,
       foregroundColor: Colors.white,
