@@ -115,9 +115,9 @@ class ProductBloc extends BlocBase {
 
   @override
   void dispose() {
-    super.dispose();
     _dataController.close();
     _loadingController.close();
     _createdController.close();
+    super.dispose();
   }
 }

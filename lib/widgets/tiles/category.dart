@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual_gerencia/pages/product.dart';
+import 'package:loja_virtual_gerencia/widgets/edit_category_dialog.dart';
 
 class CategoryTile extends StatelessWidget {
   const CategoryTile({super.key, required this.category});
@@ -13,9 +14,17 @@ class CategoryTile extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Card(
         child: ExpansionTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(category.get('icon')),
-            backgroundColor: Colors.transparent,
+          leading: GestureDetector(
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => const EditCategoryDialog(),
+              );
+            },
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(category.get('icon')),
+              backgroundColor: Colors.transparent,
+            ),
           ),
           title: Text(
             category.get('title'),
