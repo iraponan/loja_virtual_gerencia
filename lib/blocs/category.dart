@@ -3,11 +3,13 @@ import 'dart:io';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CategoryBloc extends BlocBase {
   CategoryBloc({this.category}) {
     if (category != null) {
+      title = category!.get('title');
       _titleController.add(category!.get('title'));
       _imageController.add(category!.get('icon'));
       _deleteController.add(true);
@@ -21,8 +23,12 @@ class CategoryBloc extends BlocBase {
   final _deleteController = BehaviorSubject<bool>();
   final DocumentSnapshot? category;
 
-  late File image;
-  late String title;
+  File? image;
+  String? title;
+
+  SettableMetadata metadata = SettableMetadata(
+    contentType: "image/jpeg",
+  );
 
   Stream<String> get outTitle => _titleController.stream.transform(
           StreamTransformer<String, String>.fromHandlers(
@@ -44,7 +50,36 @@ class CategoryBloc extends BlocBase {
 
   void setTitle(String text) {
     title = text;
-    _titleController.add(title);
+    _titleController.add(title!);
+  }
+
+  Future<void> saveData() async {
+    if (image == null && category != null && title == category!.get('title')) {
+      return;
+    }
+    Map<String, dynamic> dataToSave = {};
+
+    if (image != null && title != null) {
+      UploadTask task = FirebaseStorage.instance.ref().child('icons').child(title!).putFile(image!, metadata);
+      TaskSnapshot snap = await task;
+      dataToSave['icon'] = await snap.ref.getDownloadURL();
+    }
+
+    if (category == null || category?.get('title') != title) {
+      dataToSave['title'] = title;
+    }
+
+    if (category == null) {
+      await FirebaseFirestore.instance.collection('products').doc(title?.toLowerCase()).set(dataToSave);
+    } else {
+      await category?.reference.update(dataToSave);
+    }
+  }
+
+  void delete() async {
+    String images = category!.get('icon');
+    await FirebaseStorage.instance.refFromURL(images).delete().catchError((e) => print(e));
+    category?.reference.delete();
   }
 
   @override

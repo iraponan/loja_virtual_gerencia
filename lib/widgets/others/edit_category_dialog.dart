@@ -61,18 +61,18 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                     }),
               ),
               title: StreamBuilder<String>(
-                stream: categoryBloc.outTitle,
-                builder: (context, snapshot) {
-                  return TextField(
-                    controller: controller,
-                    onChanged: categoryBloc.setTitle,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      errorText: snapshot.hasError ? snapshot.error.toString() : null
-                    ),
-                  );
-                }
-              ),
+                  stream: categoryBloc.outTitle,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      controller: controller,
+                      onChanged: categoryBloc.setTitle,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: InputDecoration(
+                          errorText: snapshot.hasError
+                              ? snapshot.error.toString()
+                              : null),
+                    );
+                  }),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -82,7 +82,12 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                     initialData: false,
                     builder: (context, snapshot) {
                       return TextButton(
-                        onPressed: snapshot.data ?? false ? () {} : null,
+                        onPressed: snapshot.data ?? false
+                            ? () {
+                                categoryBloc.delete();
+                                Navigator.of(context).pop();
+                              }
+                            : null,
                         style: TextButton.styleFrom(
                           foregroundColor: Colors.redAccent,
                         ),
@@ -90,17 +95,21 @@ class _EditCategoryDialogState extends State<EditCategoryDialog> {
                       );
                     }),
                 StreamBuilder<bool>(
-                  stream: categoryBloc.submitValid,
-                  builder: (context, snapshot) {
-                    return TextButton(
-                      onPressed: snapshot.data ?? false ? () {} : null,
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.blueAccent,
-                      ),
-                      child: const Text('Salvar'),
-                    );
-                  }
-                ),
+                    stream: categoryBloc.submitValid,
+                    builder: (context, snapshot) {
+                      return TextButton(
+                        onPressed: snapshot.data ?? false
+                            ? () async {
+                                categoryBloc.saveData();
+                                Navigator.of(context).pop();
+                              }
+                            : null,
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.blueAccent,
+                        ),
+                        child: const Text('Salvar'),
+                      );
+                    }),
               ],
             ),
           ],

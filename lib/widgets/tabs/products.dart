@@ -13,8 +13,8 @@ class _ProductsTabState extends State<ProductsTab> with AutomaticKeepAliveClient
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return FutureBuilder<QuerySnapshot>(
-      future: FirebaseFirestore.instance.collection('products').get(),
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('products').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
