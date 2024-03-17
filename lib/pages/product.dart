@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loja_virtual_gerencia/blocs/product.dart';
-import 'package:loja_virtual_gerencia/widgets/images_product.dart';
+import 'package:loja_virtual_gerencia/widgets/image/images_product.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage(
@@ -73,9 +73,10 @@ class _ProductPageState extends State<ProductPage> {
                       ),
                     ),
                     ImagesProduct(
-                      onSaved: (List<dynamic>? newValue) {},
-                      validator: (List<dynamic>? value) {},
-                      initialValue: [],
+                      context: context,
+                      onSaved: (l) {},
+                      validator: (l) {},
+                      initialValue: snapshot.data?['images'],
                     ),
                     TextFormField(
                       initialValue: snapshot.data?['title'],

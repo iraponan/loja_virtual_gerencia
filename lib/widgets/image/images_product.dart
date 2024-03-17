@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:loja_virtual_gerencia/widgets/image/image_remove_sheet.dart';
+import 'package:loja_virtual_gerencia/widgets/image/image_source_sheet.dart';
 
 class ImagesProduct extends FormField<List> {
   ImagesProduct({
     super.key,
+    required BuildContext context,
     required FormFieldSetter<List> onSaved,
     required FormFieldValidator<List> validator,
     required List initialValue,
@@ -17,6 +19,7 @@ class ImagesProduct extends FormField<List> {
                 : AutovalidateMode.disabled,
             builder: (state) {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
                     height: 124,
@@ -44,7 +47,19 @@ class ImagesProduct extends FormField<List> {
                                     fit: BoxFit.cover,
                                   ),
                             onLongPress: () {
-                              state.didChange(state.value?..remove(i));
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => ImageRemoveSheet(
+                                  onImageSelected: (option) {
+                                    if (option) {
+                                      state.didChange(state.value?..remove(i));
+                                      Navigator.of(context).pop();
+                                    } else {
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                ),
+                              );
                             },
                           ),
                         );
@@ -55,9 +70,19 @@ class ImagesProduct extends FormField<List> {
                               height: 100,
                               width: 100,
                               color: Colors.white.withAlpha(50),
-                              child: const Icon(Icons.camera_enhance),
+                              child: const Icon(Icons.add),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) => ImageSourceSheet(
+                                  onImageSelected: (image) {
+                                    state.didChange(state.value?..add(image));
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              );
+                            },
                           ),
                         ),
                     ),
@@ -65,7 +90,10 @@ class ImagesProduct extends FormField<List> {
                   state.hasError
                       ? Text(
                           '${state.errorText}',
-                          style: const TextStyle(color: Colors.red, fontSize: 12),
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
                         )
                       : const SizedBox.shrink(),
                 ],
