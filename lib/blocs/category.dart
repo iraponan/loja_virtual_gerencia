@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/rxdart.dart';
@@ -18,9 +21,31 @@ class CategoryBloc extends BlocBase {
   final _deleteController = BehaviorSubject<bool>();
   final DocumentSnapshot? category;
 
-  Stream<String> get outTitle => _titleController.stream;
+  late File image;
+  late String title;
+
+  Stream<String> get outTitle => _titleController.stream.transform(
+          StreamTransformer<String, String>.fromHandlers(
+              handleData: (title, sink) {
+        if (title.isEmpty) {
+          sink.addError('Insira um título!');
+        } else {
+          sink.add(title);
+        }
+      }));
   Stream get outImage => _imageController.stream;
   Stream<bool> get outDelete => _deleteController.stream;
+  Stream<bool> get submitValid => CombineLatestStream.combine2(outTitle, outImage, (a, b) => true);
+
+  void setImage(File file) {
+    image = file;
+    _imageController.add(image);
+  }
+
+  void setTitle(String text) {
+    title = text;
+    _titleController.add(title);
+  }
 
   @override
   void dispose() {
